@@ -65,7 +65,11 @@ fun runExpressionCalculator() {
     print("수식을 입력해주세요: ")
     val expression: String = readln()
     val expressionCalculator = ExpressionCalculator(expression)
-    println(expressionCalculator.operate())
+    try{
+        println(expressionCalculator.operate())
+    }catch (e: Exception){
+        println("유효하지 않은 수식입니다.")
+    }
 
     println("---------------------------------------")
 }

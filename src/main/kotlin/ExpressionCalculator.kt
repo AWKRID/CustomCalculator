@@ -7,6 +7,10 @@ class ExpressionCalculator(_exp: String) {
 
     fun operate(): Double {
         val stk: Stack<Double> = Stack<Double>()
+        if(!isValidExpression()){
+            throw Exception()
+
+        }
         val postFixList = toPostFix(this.exp)
         for (element in postFixList) {
             if (isDigit(element[0])) {
@@ -19,7 +23,22 @@ class ExpressionCalculator(_exp: String) {
         }
         return stk.pop()
     }
-
+    private fun isValidExpression() : Boolean{
+        exp = exp.replace("\\s+".toRegex(), "")
+        println(exp)
+        var ret = true
+        for(i in exp.indices){
+            when(exp[i]){
+                '+', '-', '*', '/', '(', ')' -> continue
+                in '0'..'9' -> continue
+                else -> {
+                    ret = false
+                    break
+                }
+            }
+        }
+        return ret
+    }
     private fun basicOperate(num1: Double, num2: Double, op: String): Double {
         return when (op) {
             "+" -> num1 + num2
