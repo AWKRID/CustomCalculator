@@ -140,7 +140,7 @@ class ExpressionCalculator(_exp: String) {
                         postFixExpression += exp[i + j].toString()
                         j++
                     }
-                    postFixExpression += " "
+                    postFixExpression += blank
                     j--
                 }
             }

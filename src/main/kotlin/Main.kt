@@ -63,15 +63,15 @@ fun runExpressionCalculator() {
 
     println("공학용 계산기입니다.")
     println("사용가능한 함수 규칙은 아래와 같습니다.")
-    println("사인함수 : sin, 코사인함수 : cos, 탄젠트 함수 : tan" )
+    println("사인함수 : sin, 코사인함수 : cos, 탄젠트 함수 : tan")
     println("e의 제곱 : exp, 자연로그 : log, 제곱근 : sqrt")
     println("위의 함수 사용시 반드시 괄호로 묶어주세요. 예시) sin(100) + sqrt(1000)")
     print("수식을 입력해주세요: ")
     val expression: String = readln()
     val expressionCalculator = ExpressionCalculator(expression)
-    try{
+    try {
         println(expressionCalculator.operate())
-    }catch (e: Exception){
+    } catch (e: Exception) {
         println("유효하지 않은 수식입니다.")
     }
 
