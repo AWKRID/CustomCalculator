@@ -21,9 +21,7 @@ class ExpressionCalculator(_exp: String) {
 
         }
         val postFixList = toPostFix(this.exp)
-        println(postFixList)
         for (element in postFixList) {
-            println(element)
             if (isDigit(element[0])) {
                 stk.push(element.toDouble())
             } else {
