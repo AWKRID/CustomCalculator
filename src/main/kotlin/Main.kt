@@ -33,7 +33,6 @@ fun runBasicCalculator() {
     println("기본 계산기입니다.")
     val a: Int
     val b: Int
-    val op: String
 
     try {
         print("첫 번째 피연산자를 입력해주세요: ")
@@ -46,7 +45,7 @@ fun runBasicCalculator() {
         return
     }
     print("연산자를 입력해주세요(+,-,*,/,%): ")
-    op = readln()
+    val op: String = readln()
     print("결과 : ")
     when (op) {
         "+" -> println(adder.operate(a, b))
@@ -62,10 +61,12 @@ fun runBasicCalculator() {
 }
 
 fun runExpressionCalculator() {
+
     println("수식 계산기입니다.")
     print("수식을 입력해주세요: ")
     val expression: String = readln()
-    println(toPostFix(expression))
+    val expressionCalculator = ExpressionCalculator(expression)
+    println(expressionCalculator.operate())
 
     println("---------------------------------------")
 }
