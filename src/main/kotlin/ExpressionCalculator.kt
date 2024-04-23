@@ -52,7 +52,6 @@ class ExpressionCalculator(_exp: String) {
     private fun isValidExpression(): Boolean {
         exp = exp.replace("\\s+".toRegex(), "")
         changeExpression()
-        println(exp)
         var ret = true
         for (i in exp.indices) {
             when (exp[i]) {
