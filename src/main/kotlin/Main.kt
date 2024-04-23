@@ -8,7 +8,7 @@ fun main() {
     while (true) {
         println("김민수의 계산기에 오신 것을 환영합니다!")
         println("1. 기본 계산기")
-        println("2. 수식 계산기")
+        println("2. 공학용 계산기")
         println("종료하시려면 아무키나 눌러주세요.")
         println("---------------------------------------")
         modeChoice = readln()
@@ -61,11 +61,19 @@ fun runBasicCalculator() {
 
 fun runExpressionCalculator() {
 
-    println("수식 계산기입니다.")
+    println("공학용 계산기입니다.")
+    println("사용가능한 함수 규칙은 아래와 같습니다.")
+    println("사인함수 : sin, 코사인함수 : cos, 탄젠트 함수 : tan" )
+    println("e의 제곱 : exp, 자연로그 : log, 제곱근 : sqrt")
+    println("위의 함수 사용시 반드시 괄호로 묶어주세요. 예시) sin(100) + sqrt(1000)")
     print("수식을 입력해주세요: ")
     val expression: String = readln()
     val expressionCalculator = ExpressionCalculator(expression)
-    println(expressionCalculator.operate())
+    try{
+        println(expressionCalculator.operate())
+    }catch (e: Exception){
+        println("유효하지 않은 수식입니다.")
+    }
 
     println("---------------------------------------")
 }
