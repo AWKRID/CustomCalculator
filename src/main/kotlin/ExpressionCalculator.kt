@@ -102,7 +102,7 @@ class ExpressionCalculator(_exp: String) {
             "+" -> num1 + num2
             "-" -> num1 - num2
             "*" -> num1 * num2
-            "/" -> num1 / num2
+            "/" -> num2 / num1
             else -> throw Exception()
         }
     }
