@@ -14,7 +14,7 @@ import kotlin.math.*
 class ExpressionCalculator(_exp: String) {
     private var exp: String = _exp
 
-    fun operate(): Unit {
+    fun operate() {
         if (!isValidExpression()) {
             throw Exception()
         }

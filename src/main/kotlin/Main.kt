@@ -60,8 +60,8 @@ class Basic(
         return
     }
 
-    private fun basicOperate(num1: Int, num2: Int, op: String): Unit {
-        var result: Double = when (op) {
+    private fun basicOperate(num1: Int, num2: Int, op: String) {
+        val result: Double = when (op) {
             "+" -> adder.operate(num1, num2)
             "-" -> subtractor.operate(num1, num2)
             "*" -> multiplier.operate(num1, num2)
