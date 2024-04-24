@@ -137,5 +137,5 @@ fun printExpressionCalculatorInfo() {
 }
 
 fun printLine() {
-    println("---------------------------------------")
+    println("----------------------------------------")
 }
