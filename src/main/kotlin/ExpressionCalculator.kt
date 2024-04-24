@@ -10,6 +10,9 @@ import kotlin.math.*
 // exponential(e^x) -> e
 // square root -> r
 // first minus -> m
+val functionSignList = listOf("s", "c", "t", "l", "e", "r")
+val functionSignCharList = listOf('s', 'c', 't', 'l', 'e', 'r')
+val basicOperatorCharList = listOf('+', '-', '*', '/')
 
 class ExpressionCalculator(_exp: String) {
     private var exp: String = _exp
@@ -22,17 +25,17 @@ class ExpressionCalculator(_exp: String) {
         println("결과 : ${calculateWithPostFixList(postFixList)}")
         printLine()
     }
-    private fun calculateWithPostFixList(postFixList : List<String>) : Double{
+
+    private fun calculateWithPostFixList(postFixList: List<String>): Double {
         val stk: Stack<Double> = Stack<Double>()
         for (element in postFixList) {
             if (isDigit(element[0])) {
                 stk.push(element.toDouble())
             } else {
-                if (element in listOf("m","s","c","t","l","e","r")) {
+                if (element in functionSignList + "m") {
                     val num1 = stk.pop().toDouble()
                     stk.push(functionalOperate(num1, element))
-                }
-                else{
+                } else {
                     val num1 = stk.pop().toDouble()
                     val num2 = stk.pop().toDouble()
                     stk.push(basicOperate(num1, num2, element))
@@ -40,32 +43,37 @@ class ExpressionCalculator(_exp: String) {
 
             }
         }
-        return round(stk.pop()*100)/100
+        return round(stk.pop() * 100) / 100
     }
-    
+
     private fun trimExpression() {
+
         exp = exp.replace("\\s+".toRegex(), "")
-        if(exp[0] == '-') exp = "m" + exp.substring(1)
-        exp = exp.replace("sin","s")
-        exp = exp.replace("cos","c")
-        exp = exp.replace("tan","t")
-        exp = exp.replace("log","l")
-        exp = exp.replace("exp","e")
-        exp = exp.replace("sqrt","r")
+        if (exp[0] == '-') exp = "m" + exp.substring(1)
+        for (i in 1..exp.lastIndex) {
+            if (exp[i] == '-' && exp[i - 1] == '(') {
+                exp = exp.substring(0, i) + "m" + exp.substring(i + 1)
+            }
+        }
+        for (function in functions) {
+            exp = exp.replace(function.key, function.value)
+        }
         return
     }
+
     private fun isValidExpression(): Boolean {
         trimExpression()
         var ret = true
         for (i in exp.indices) {
             when (exp[i]) {
-                's','c','t','l','e','r' -> {
-                    if (exp[i+1] != '(') {
+                in functionSignCharList -> {
+                    if (exp[i + 1] != '(') {
                         ret = false
                         break
                     }
                 }
-                '.', 'm', '+', '-', '*', '/', '(', ')' -> continue
+
+                in basicOperatorCharList, '.', 'm', '(', ')' -> continue
                 in '0'..'9' -> continue
                 else -> {
                     ret = false
@@ -75,8 +83,9 @@ class ExpressionCalculator(_exp: String) {
         }
         return ret
     }
-    private fun functionalOperate(num: Double, op : String) : Double{
-        return when(op){
+
+    private fun functionalOperate(num: Double, op: String): Double {
+        return when (op) {
             "m" -> -1 * num
             "s" -> sin(num)
             "c" -> cos(num)
@@ -87,6 +96,7 @@ class ExpressionCalculator(_exp: String) {
             else -> throw Exception()
         }
     }
+
     private fun basicOperate(num1: Double, num2: Double, op: String): Double {
         return when (op) {
             "+" -> num1 + num2
@@ -99,7 +109,7 @@ class ExpressionCalculator(_exp: String) {
 
     private fun getPriority(op: Char): Int {
         return when (op) {
-            's','c','t','l','e','r' -> 5
+            in functionSignCharList -> 5
             'm' -> 4
             '*', '/' -> 3
             '+', '-' -> 2
@@ -121,7 +131,7 @@ class ExpressionCalculator(_exp: String) {
             }
             topChar = exp[i]
             when (topChar) {
-                '+', '-', '*', '/','m','s','c','t','l','e','r' -> {
+                in basicOperatorCharList, in functionSignCharList, 'm' -> {
                     while (stk.isNotEmpty() && getPriority(stk.peek()) >= getPriority(topChar)) {
                         postFixExpression += stk.pop().toString() + blank
                     }
@@ -154,7 +164,7 @@ class ExpressionCalculator(_exp: String) {
 
 
     private fun isDigit(ch: Char): Boolean {
-        return ch in '0'..'9' || ch =='.'
+        return ch in '0'..'9' || ch == '.'
 
     }
 }
