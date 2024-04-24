@@ -1,6 +1,6 @@
 package org.example
 
-import java.util.*
+import java.util.Stack
 import kotlin.math.*
 
 // sine -> s
@@ -14,13 +14,16 @@ import kotlin.math.*
 class ExpressionCalculator(_exp: String) {
     private var exp: String = _exp
 
-    fun operate(): Double {
-        val stk: Stack<Double> = Stack<Double>()
+    fun operate(): Unit {
         if (!isValidExpression()) {
             throw Exception()
-
         }
         val postFixList = toPostFix(this.exp)
+        println("결과 : ${calculateWithPostFixList(postFixList)}")
+        printLine()
+    }
+    private fun calculateWithPostFixList(postFixList : List<String>) : Double{
+        val stk: Stack<Double> = Stack<Double>()
         for (element in postFixList) {
             if (isDigit(element[0])) {
                 stk.push(element.toDouble())
@@ -39,7 +42,9 @@ class ExpressionCalculator(_exp: String) {
         }
         return round(stk.pop()*100)/100
     }
-    private fun changeExpression() {
+    
+    private fun trimExpression() {
+        exp = exp.replace("\\s+".toRegex(), "")
         if(exp[0] == '-') exp = "m" + exp.substring(1)
         exp = exp.replace("sin","s")
         exp = exp.replace("cos","c")
@@ -50,8 +55,7 @@ class ExpressionCalculator(_exp: String) {
         return
     }
     private fun isValidExpression(): Boolean {
-        exp = exp.replace("\\s+".toRegex(), "")
-        changeExpression()
+        trimExpression()
         var ret = true
         for (i in exp.indices) {
             when (exp[i]) {
@@ -71,15 +75,15 @@ class ExpressionCalculator(_exp: String) {
         }
         return ret
     }
-    private fun functionalOperate(num1: Double, op : String) : Double{
+    private fun functionalOperate(num: Double, op : String) : Double{
         return when(op){
-            "m" -> -1 * num1
-            "s" -> sin(num1)
-            "c" -> cos(num1)
-            "t" -> tan(num1)
-            "l" -> ln(num1)
-            "e" -> exp(num1)
-            "r" -> sqrt(num1)
+            "m" -> -1 * num
+            "s" -> sin(num)
+            "c" -> cos(num)
+            "t" -> tan(num)
+            "l" -> ln(num)
+            "e" -> exp(num)
+            "r" -> sqrt(num)
             else -> throw Exception()
         }
     }
@@ -105,7 +109,7 @@ class ExpressionCalculator(_exp: String) {
     }
 
     private fun toPostFix(exp: String): MutableList<String> {
-        var ch: Char
+        var topChar: Char
         val stk: Stack<Char> = Stack<Char>()
         val blank = " "
         var postFixExpression = ""
@@ -115,16 +119,16 @@ class ExpressionCalculator(_exp: String) {
                 j--
                 continue
             }
-            ch = exp[i]
-            when (ch) {
+            topChar = exp[i]
+            when (topChar) {
                 '+', '-', '*', '/','m','s','c','t','l','e','r' -> {
-                    while (stk.isNotEmpty() && getPriority(stk.peek()) >= getPriority(ch)) {
+                    while (stk.isNotEmpty() && getPriority(stk.peek()) >= getPriority(topChar)) {
                         postFixExpression += stk.pop().toString() + blank
                     }
-                    stk.push(ch)
+                    stk.push(topChar)
                 }
 
-                '(' -> stk.push(ch)
+                '(' -> stk.push(topChar)
                 ')' -> {
                     while (stk.peek() != '(') {
                         postFixExpression += stk.pop().toString() + blank
@@ -143,9 +147,9 @@ class ExpressionCalculator(_exp: String) {
             }
         }
         while (stk.isNotEmpty()) postFixExpression += stk.pop().toString() + blank
-        val ret: MutableList<String> = postFixExpression.split(" ").toMutableList()
-        ret.removeLast()
-        return ret
+        val postFixList: MutableList<String> = postFixExpression.split(" ").toMutableList()
+        postFixList.removeLast()
+        return postFixList
     }
 
 
