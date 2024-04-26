@@ -72,7 +72,6 @@ class ExpressionCalculator(_exp: String) {
                         break
                     }
                 }
-
                 in basicOperatorCharList, '.', 'm', '(', ')' -> continue
                 in '0'..'9' -> continue
                 else -> {

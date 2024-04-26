@@ -24,58 +24,6 @@ fun sleep(seconds: Long) {
     }
 }
 
-class Basic(
-    private val adder: BasicCalculator = BasicCalculator(AddOperation()),
-    private val subtractor: BasicCalculator = BasicCalculator(SubtractOperation()),
-    private val divider: BasicCalculator = BasicCalculator(DivisionOperation()),
-    private val remainder: BasicCalculator = BasicCalculator(RemainderOperation()),
-    private val multiplier: BasicCalculator = BasicCalculator(MultiplicationOperation()),
-    private var operand1: Int = 0,
-    private var operand2: Int = 0,
-    private var op: String = "+",
-) {
-    fun runBasicCalculator() {
-        println("기본 계산기입니다.")
-        getOperandAndOperator()
-        try {
-            basicOperate(operand1, operand2, op)
-        } catch (e: Exception) {
-            showInvalidInputMessage()
-        }
-        return
-    }
-
-    private fun getOperandAndOperator() {
-        try {
-            print("첫 번째 피연산자를 입력해주세요: ")
-            operand1 = readln().toInt()
-            print("두 번째 피연산자를 입력해주세요: ")
-            operand2 = readln().toInt()
-        } catch (e: NumberFormatException) {
-            showInvalidInputMessage()
-            return
-        }
-        print("연산자를 입력해주세요(+,-,*,/,%): ")
-        op = readln()
-        return
-    }
-
-    private fun basicOperate(num1: Int, num2: Int, op: String) {
-        val result: Double = when (op) {
-            "+" -> adder.operate(num1, num2)
-            "-" -> subtractor.operate(num1, num2)
-            "*" -> multiplier.operate(num1, num2)
-            "/" -> divider.operate(num1, num2)
-            "%" -> remainder.operate(num1, num2)
-            else -> {
-                throw Exception()
-            }
-        }
-        println("결과 : $result")
-        printLine()
-    }
-}
-
 
 fun printMenu() {
     println("김민수의 계산기에 오신 것을 환영합니다!")
@@ -87,12 +35,12 @@ fun printMenu() {
 
 fun getUserChoice() {
     val modeChoice: String = readln()
-    val basicCalculator = Basic(
-        adder = BasicCalculator(AddOperation()),
-        subtractor = BasicCalculator(SubtractOperation()),
-        divider = BasicCalculator(DivisionOperation()),
-        remainder = BasicCalculator(RemainderOperation()),
-        multiplier = BasicCalculator(MultiplicationOperation()),
+    val basicCalculator = BasicCalculator(
+        adder = Calculator(AddOperation()),
+        subtractor = Calculator(SubtractOperation()),
+        divider = Calculator(DivisionOperation()),
+        remainder = Calculator(RemainderOperation()),
+        multiplier = Calculator(MultiplicationOperation()),
     )
     when (modeChoice) {
         "1" -> basicCalculator.runBasicCalculator()
